@@ -1,5 +1,5 @@
 # Proyecto para Pruebas de SW
-**Equipo:**
+**Equipo:**  
 César Alejandro Cervantes Salinas C19151182  
 Oscar Daniel Cervantes Romo 20151659  
 Erik Alejandro Ramírez De Lira 20151321  
