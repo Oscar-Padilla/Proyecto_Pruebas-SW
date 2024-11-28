@@ -22,7 +22,7 @@ test('Test de inicio de sesión', async ({ page }) => {
   await PasswordInput.fill("987456321Pruebas");
 
   await page.keyboard.press('Enter');
-  await expect(page.locator("a[id='dd_btn_acount']")).toContainText("                                YahelPruebas                                ");
+  await expect(page.locator("a[id='dd_btn_acount']")).toContainText("YahelPruebas",{ timeout: 10000 });
 
 
 });
@@ -99,84 +99,81 @@ test('Producto carrito', async ({page})=> {
 
 })
 
-// test('ir a pagar', async ({ page }) => {
+test('ir a pagar', async ({ page }) => {
 
-//   await page.goto('https://www.zegucom.com.mx/');
+  await page.goto('https://www.zegucom.com.mx/');
 
-//   await expect(page).toHaveTitle(/Inicio | Zegucom Cómputo/);
+  await expect(page).toHaveTitle(/Inicio | Zegucom Cómputo/);
 
-//   const ButtonLogIn1 = page.locator("a[id='dd_acount_wos']");
-//   await expect(ButtonLogIn1).toBeVisible();
-//   await ButtonLogIn1.click();
+  const ButtonLogIn1 = page.locator("a[id='dd_acount_wos']");
+  await expect(ButtonLogIn1).toBeVisible();
+  await ButtonLogIn1.click();
 
-//   const ButtonLogIn2 = page.locator("a[href='/site/login']").nth(0);;
-//   await expect(ButtonLogIn2).toBeVisible();
-//   await ButtonLogIn2.click();
+  const ButtonLogIn2 = page.locator("a[href='/site/login']").nth(0);;
+  await expect(ButtonLogIn2).toBeVisible();
+  await ButtonLogIn2.click();
 
-//   const AccountInput = page.locator("input[id='loginform-username']");
-//   await AccountInput.fill("pruebaspage264@gmail.com");
+  const AccountInput = page.locator("input[id='loginform-username']");
+  await AccountInput.fill("pruebaspage264@gmail.com");
 
-//   const PasswordInput = page.locator("input[id='loginform-password'] ");
-//   await PasswordInput.fill("987456321Pruebas");
+  const PasswordInput = page.locator("input[id='loginform-password'] ");
+  await PasswordInput.fill("987456321Pruebas");
 
-//   await page.keyboard.press('Enter');
-//   await expect(page.locator("a[id='dd_btn_acount']")).toContainText("                                YahelPruebas                                ");
+  await page.keyboard.press('Enter');
+  await expect(page.locator("a[id='dd_btn_acount']")).toContainText("YahelPruebas", { timeout: 10000 });
 
-//   const searchInput = page.locator('input.input-search-autocomplete.search');
-//   await page.waitForSelector('input.input-search-autocomplete.search', { state: 'visible' });
-//   await expect(searchInput).toBeVisible();
+  const searchInput = page.locator('input.input-search-autocomplete.search');
+  await page.waitForSelector('input.input-search-autocomplete.search', { state: 'visible' });
+  await expect(searchInput).toBeVisible();
 
+  await searchInput.fill("laptops");
+  await page.keyboard.press('Enter');
 
+  const productButton = page.locator("a[class='black-text selectItem ']").nth(3);
+  await expect(productButton).toBeVisible({ timeout: 0 });
+  await productButton.click();
 
-//   await searchInput.fill("laptops");
-//   await page.keyboard.press('Enter');
+  const agregar = page.locator("i[class='material-icons mr-1']").nth(1);
+  await expect(agregar).toBeVisible({ timeout: 0 });
+  await agregar.click();
 
-//   const productButton = page.locator('img[src="/images/brands/webp/LV.webp"]').nth(0);
-//   await expect(productButton).toBeVisible({ timeout: 0 });
-//   await productButton.click();
+  try {
+    // Espera a que la ventana sea visible (máximo 10 segundos)
+    await page.waitForSelector("div[aria-labelledby='swal2-title']", { timeout: 10000 });
+  
+    // Una vez visible, continúa con las acciones
+    const botonconfirmar = page.locator("button[class='swal2-confirm swal2-styled']");
+    await expect(botonconfirmar).toBeVisible(); // Verifica que el botón está visible
+    await botonconfirmar.click(); // Haz clic en el botón
+  } catch (e) {
+    console.log("La ventana no apareció dentro del tiempo esperado.");
+  }
+  
+  const carritobtn = page.locator("a[href='/z-cart/index']");
+  await expect(carritobtn).toBeVisible();
+  await carritobtn.click();
 
-//   const agregar = page.locator("a[class='add-to-cart-search-fast rounded d-flex justify-center a-items-center waves-effect']").nth(1);
-//   await expect(agregar).toBeVisible({ timeout: 0 });
-//   await agregar.click();
+  // const agregar2 = page.locator("a[href='/z-cart/index']");
+  // await expect(agregar2).toBeVisible();
+  // await agregar2.click();
 
-//   const agregar2 = page.locator("a[class='add-to-cart rounded btn amber grey-text text-darken-4 z-depth-0']").nth(0);
-//   await expect(agregar2).toBeVisible();
-//   await agregar2.click();
+  const deliverybtn = page.locator("a[href='/z-cart/delivery-method']");
+  await expect(deliverybtn).toBeVisible();
+  await deliverybtn.click();
 
+  const pgrbtn = page.locator('a:has-text("Siguiente")');
+  await expect(pgrbtn).toBeVisible();
+  await pgrbtn.click();
 
+  const metpag = page.locator('span:has-text("Tarjeta de Débito/Crédito (todas las tarjetas)")');
+  await expect(metpag).toBeVisible({ timeout: 0 });
+  await metpag.click();
+  await new Promise(resolve => setTimeout(resolve, 5000));
 
+  const pagarbtn = page.locator('button:has-text("Pagar")');
+  await expect(pagarbtn).toBeVisible({ timeout: 0 });
 
-
-//   const carritobtn = page.locator("a[href='/z-cart/index']").nth(0);;
-//   await expect(carritobtn).toBeVisible();
-//   await carritobtn.click();
-
-
-
-
-//   const deliverybtn = page.locator("a[href='/z-cart/delivery-method']");
-//   await expect(deliverybtn).toBeVisible();
-//   await deliverybtn.click();
-
-
-//   const pgrbtn = page.locator('a:has-text("Siguiente")');
-//   await expect(pgrbtn).toBeVisible();
-//   await pgrbtn.click();
-
-
-//   const metpag = page.locator('span:has-text("Tarjeta de Débito/Crédito (todas las tarjetas)")');
-//   await expect(metpag).toBeVisible();
-//   await metpag.click();
-//   await new Promise(resolve => setTimeout(resolve, 5000));
-
-
-//   const pagarbtn = page.locator('button:has-text("Pagar")');
-//   await expect(pagarbtn).toBeVisible();
-
-
-
-
-// });
+});
 
 // test('borrar carrito', async ({ page }) => {
 //   await page.goto('https://www.zegucom.com.mx/');
@@ -197,7 +194,7 @@ test('Producto carrito', async ({page})=> {
 //   await productButton.click();
 
 //   await page.waitForSelector('#btn-car', { state: 'visible' });
-//   await new Promise(resolve => setTimeout(resolve, 2000)); 
+//   await new Promise(resolve => setTimeout(resolve, 2000));
 //   await page.click('#btn-car');
 //   await page.waitForTimeout(5000);
 
