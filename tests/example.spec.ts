@@ -22,7 +22,7 @@ test('Test de inicio de sesión', async ({ page }) => {
   await PasswordInput.fill("987456321Pruebas");
 
   await page.keyboard.press('Enter');
-  await expect(page.locator("a[id='dd_btn_acount']")).toContainText("YahelPruebas",{ timeout: 10000 });
+  await expect(page.locator("a[id='dd_btn_acount']")).toContainText("YahelPruebas",{ timeout: 0 });
 
 
 });
@@ -120,7 +120,7 @@ test('ir a pagar', async ({ page }) => {
   await PasswordInput.fill("987456321Pruebas");
 
   await page.keyboard.press('Enter');
-  await expect(page.locator("a[id='dd_btn_acount']")).toContainText("YahelPruebas", { timeout: 10000 });
+  await expect(page.locator("a[id='dd_btn_acount']")).toContainText("YahelPruebas", { timeout: 0 });
 
   const searchInput = page.locator('input.input-search-autocomplete.search');
   await page.waitForSelector('input.input-search-autocomplete.search', { state: 'visible' });
@@ -140,7 +140,7 @@ test('ir a pagar', async ({ page }) => {
   try {
     // Espera a que la ventana sea visible (máximo 10 segundos)
     await page.waitForSelector("div[aria-labelledby='swal2-title']", { timeout: 10000 });
-  
+
     // Una vez visible, continúa con las acciones
     const botonconfirmar = page.locator("button[class='swal2-confirm swal2-styled']");
     await expect(botonconfirmar).toBeVisible(); // Verifica que el botón está visible
@@ -148,7 +148,7 @@ test('ir a pagar', async ({ page }) => {
   } catch (e) {
     console.log("La ventana no apareció dentro del tiempo esperado.");
   }
-  
+
   const carritobtn = page.locator("a[href='/z-cart/index']");
   await expect(carritobtn).toBeVisible();
   await carritobtn.click();
@@ -175,39 +175,48 @@ test('ir a pagar', async ({ page }) => {
 
 });
 
-// test('borrar carrito', async ({ page }) => {
-//   await page.goto('https://www.zegucom.com.mx/');
+test('borrar carrito', async ({ page }) => {
+  await page.goto('https://www.zegucom.com.mx/');
 
-//   await expect(page).toHaveTitle(/Inicio | Zegucom Cómputo/);
+  await expect(page).toHaveTitle(/Inicio | Zegucom Cómputo/);
 
-//   const searchInput = page.locator('input.input-search-autocomplete.search');
-//   await page.waitForSelector('input.input-search-autocomplete.search', { state: 'visible' });
-//   await expect(searchInput).toBeVisible();
+  const searchInput = page.locator('input.input-search-autocomplete.search');
+  await page.waitForSelector('input.input-search-autocomplete.search', { state: 'visible' });
+  await expect(searchInput).toBeVisible({ timeout: 0 });
 
-//   await searchInput.fill("laptops");
-//   await page.keyboard.press('Enter');
+  await searchInput.fill("laptops");
+  await page.keyboard.press('Enter');
 
-//   await page.waitForTimeout(10000);// Espera 10 segundos
+  const productButton = page.locator('img[src="/images/brands/webp/LV.webp"]').nth(0); // O el índice correcto
+  await expect(productButton).toBeVisible({ timeout: 0 });
+  await productButton.click();
 
-//   const productButton = page.locator('img[src="/images/brands/webp/LV.webp"]').nth(0); // O el índice correcto
-//   await expect(productButton).toBeVisible();
-//   await productButton.click();
+  await page.waitForSelector('#btn-car', { state: 'visible' });
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  await page.click('#btn-car');
 
-//   await page.waitForSelector('#btn-car', { state: 'visible' });
-//   await new Promise(resolve => setTimeout(resolve, 2000));
-//   await page.click('#btn-car');
-//   await page.waitForTimeout(5000);
+  try {
+    // Espera a que la ventana sea visible (máximo 10 segundos)
+    await page.waitForSelector("div[aria-labelledby='swal2-title']", { timeout: 10000 });
 
-//   const carritobtn = page.locator("a[href='/z-cart/index']").nth(0);;
-//   await expect(carritobtn).toBeVisible();
-//   await carritobtn.click();
+    // Una vez visible, continúa con las acciones
+    const botonconfirmar = page.locator("button[class='swal2-confirm swal2-styled']");
+    await expect(botonconfirmar).toBeVisible(); // Verifica que el botón está visible
+    await botonconfirmar.click(); // Haz clic en el botón
+  } catch (e) {
+    console.log("La ventana no apareció dentro del tiempo esperado.");
+  }
 
-//   const deleteButton = page.locator('a:has-text("delete")');
-//   await expect(deleteButton).toBeVisible();
-//   await deleteButton.click();
+  const carritobtn = page.locator("a[href='/z-cart/index']").nth(0);;
+  await expect(carritobtn).toBeVisible({ timeout: 0 });
+  await carritobtn.click();
 
-//   const chiacepto = page.locator('button:has-text("Aceptar")');
-//   await expect(chiacepto).toBeVisible();
-//   await chiacepto.click();
+  const deleteButton = page.locator('a:has-text("delete")');
+  await expect(deleteButton).toBeVisible({ timeout: 0 });
+  await deleteButton.click();
 
-// });
+  const chiacepto = page.locator('button:has-text("Aceptar")');
+  await expect(chiacepto).toBeVisible({ timeout: 0 });
+  await chiacepto.click();
+
+});
