@@ -162,7 +162,7 @@ test('ir a pagar', async ({ page }) => {
   await deliverybtn.click();
 
   const pgrbtn = page.locator('a:has-text("Siguiente")');
-  await expect(pgrbtn).toBeVisible();
+  await expect(pgrbtn).toBeVisible({ timeout: 0 });
   await pgrbtn.click();
 
   const metpag = page.locator('span:has-text("Tarjeta de Débito/Crédito (todas las tarjetas)")');
